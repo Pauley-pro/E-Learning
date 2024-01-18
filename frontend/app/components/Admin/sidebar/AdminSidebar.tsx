@@ -210,7 +210,7 @@ const Sidebar = () => {
                         />
                         <Item
                             title="FAQ"
-                            to="/faq"
+                            to="/admin/faq"
                             icon={<QuizIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -245,7 +245,7 @@ const Sidebar = () => {
                         </Typography>
                         <Item
                             title="Course Analytics"
-                            to="/admin/course-analytics"
+                            to="/admin/courses-analytics"
                             icon={<BarChartOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -271,13 +271,13 @@ const Sidebar = () => {
                         >
                             {!isCollapsed && "Extras"}
                         </Typography>
-                        <Item
+                        {/*<Item
                             title="Settings"
                             to="/admin/settings"
                             icon={<SettingsIcon />}
                             selected={selected}
                             setSelected={setSelected}
-                        />
+                        />*/}
                         <div onClick={logoutHandler}>
                             <Item
                                 title="logout"

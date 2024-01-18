@@ -178,12 +178,12 @@ export const UpdateAccessToken = CatchAsyncError(async(req:Request, res:Response
             expiresIn:"3d",
         });
         req.user = user;
-        res.cookie("access_token", accessToken,accessTokenOptions);
-        res.cookie("refresh_token", refreshToken,refreshTokenOptions);
+        res.cookie("access_token", accessToken, accessTokenOptions);
+        res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-        await redis.set(user._id, JSON.stringify(user),"EX", 604800); // 7days
+        await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
 
-        next();
+        return next();
     } catch (error:any){
         return next(new ErrorHandler(error.message, 400));
     }
@@ -338,13 +338,25 @@ export const getAllUsers = CatchAsyncError(async(req:Request, res:Response, next
 // update user role ---- only for Admin
 export const updateUserRole = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
     try{
-        const { id, role } = req.body;
-        updateUserRoleService(res, id, role);
+        const { email, role } = req.body;
+        const isUserExist = await userModel.findOne({ email });
+        if (isUserExist){
+            const id = isUserExist._id;
+            updateUserRoleService(res, id, role);
+        }
+        else{
+            res.status(400).json({
+                success: false,
+                message: "User not found"
+            })
+        }
     } catch(error:any){
         return next(new ErrorHandler(error.message, 400));
     }
 });
 
+
+// delete user ---- only for admin
 export const deleteUser = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
     try{
         const {id} = req.params;

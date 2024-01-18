@@ -1,15 +1,25 @@
 import { styles } from '@/app/styles/style';
-import React,{ FC, useState } from 'react';
+import { useGetHeroDataQuery } from '@/redux/features/layout/layoutApi';
+import React,{ FC, useEffect, useState } from 'react';
 
 type Props = {
-    courseInfo: any;
-    setCourseInfo: (courseInfo: any) => void;
-    active: number;
-    setActive: (active: number) => void;
+  courseInfo: any;
+  setCourseInfo: (courseInfo: any) => void;
+  active: number;
+  setActive: (active: number) => void;
 }
 
 const CourseInformation:FC<Props> = ({courseInfo, setCourseInfo, active, setActive}) => {
   const [dragging, setDragging] = useState(false);
+  const { data } = useGetHeroDataQuery("Categories", {});
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (data){
+      setCategories(data.layout.categories);
+    }}
+    , [data])
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setActive(active + 1);
@@ -126,7 +136,45 @@ const CourseInformation:FC<Props> = ({courseInfo, setCourseInfo, active, setActi
           </div>
         </div>
         <br />
-        <div>
+        <div className="w-full flex justify-between">
+          <div className="w-[45%]">
+            <label className={`${styles.label}`} htmlFor="email">
+            Course Tags
+          </label>
+          <input
+            type="text"
+            name=""
+            required
+            value={courseInfo.tags}
+            onChange={(e: any) =>
+              setCourseInfo({ ...courseInfo, tags: e.target.value })
+            }
+            id="tags"
+            placeholder="MERN, Next 13, Socket io, tailwind css, LMS"
+            className={`${styles.input}`}
+          />
+          </div>
+          <div className="w-[50%]">
+            <label className={`${styles.label} w-50%`}>
+              Course Categories
+            </label>
+            <select 
+              name="" 
+              id="" 
+              className={`${styles.input}`}
+              value={courseInfo.category}
+              onChange={(e:any) => setCourseInfo({ ...courseInfo, category: e.target.value })}
+            >
+              <option value="" id="">Select Category</option>
+              {categories.map((item:any) => (
+                <option value={item.id} key={item._id}>
+                  {item.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        {/*<div>
           <label className={`${styles.label}`} htmlFor="email">
             Course Tags
           </label>
@@ -142,7 +190,7 @@ const CourseInformation:FC<Props> = ({courseInfo, setCourseInfo, active, setActi
             placeholder="MERN, Next 13, Socket io, tailwind css, LMS"
             className={`${styles.input}`}
           />
-        </div>
+        </div>*/}
         <br />
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
@@ -189,7 +237,12 @@ const CourseInformation:FC<Props> = ({courseInfo, setCourseInfo, active, setActi
             className="hidden"
             onChange={handleFileChange}
           />
-          <label htmlFor="file" className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${dragging ? "bg-blue-500" : "bg-transparent"}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
+          <label htmlFor="file" className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${
+            dragging ? "bg-blue-500" : "bg-transparent"
+            }`} 
+            onDragOver={handleDragOver} 
+            onDragLeave={handleDragLeave} 
+            onDrop={handleDrop}>
             {
               courseInfo.thumbnail ? (
                 <img src={courseInfo.thumbnail} alt="" className="max-h-full w-full object-cover" />
