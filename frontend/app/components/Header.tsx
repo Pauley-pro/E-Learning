@@ -23,7 +23,7 @@ type Props = {
     setRoute: (route:string) => void;
 };
 
-const Header: FC<Props> = ({activeItem,setOpen,route,open,setRoute}) => {
+const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
     const [active, setActive] = useState(false);
     const [openSidebar, setOpenSidebar] = useState(false);
     const {user} = useSelector((state:any) => state.auth);
@@ -57,7 +57,7 @@ const Header: FC<Props> = ({activeItem,setOpen,route,open,setRoute}) => {
       
     if (typeof window !== "undefined") {
         window.addEventListener("scroll", () => {
-            if (window.scrollY > 80) {
+            if (window.scrollY > 85) {
                 setActive(true);
             } else {
                 setActive(false);

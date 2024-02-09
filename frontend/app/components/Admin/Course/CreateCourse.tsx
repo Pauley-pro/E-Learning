@@ -35,11 +35,11 @@ const CreateCourse = (props: Props) => {
         level:"",
         categories:"",
         demoUrl:"",
-        thumbnail:""
+        thumbnail:"",
     });
-
+    console.log(courseInfo);
     const [benefits, setBenefits] = useState([{ title:""}]);
-    const [prerequisites, setPrerequisites] = useState([{ title:""}]);
+    const [prerequisites, setPrerequisites] = useState([{ title:"" }]);
     const [courseContentData, setCourseContentData] = useState([{ 
         videoUrl:"",
         title:"",
@@ -77,6 +77,7 @@ const CreateCourse = (props: Props) => {
         const data = {
             name: courseInfo.name,
             description: courseInfo.description,
+            categories: courseInfo.categories,
             price: courseInfo.price,
             estimatedPrice: courseInfo.estimatedPrice,
             tags: courseInfo.tags,
